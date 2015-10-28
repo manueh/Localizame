@@ -37,7 +37,7 @@ public class PrincipalWindow extends javax.swing.JFrame {
          */
         cl.show(this.getContentPane(), "initial");
         
-        //this.setVisible(true);
+        this.setVisible(true);
     }
 
     /**
