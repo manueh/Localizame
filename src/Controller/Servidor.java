@@ -13,7 +13,7 @@ public class Servidor {
      * cada grupo del servidor
      */
     private ServerSocket ss;
-    //private Socket sock;
+    private Socket sock;
     private int nombre = 0;
         
     /**
@@ -21,11 +21,12 @@ public class Servidor {
      */
     private final int portNumber = 5000;
     private int numeroConexiones = 0;
-    private Model modelo;
+    private final Model modelo;
     
     /**
      * Constructor con parámetros
-     * @param totalClients define el número total de clientes que van a conectarse
+     * @param totalClients  define el número total de clientes que van a conectarse
+     * @param _modelo       instancia del modelo para tener acceso a los datos
      */
     public Servidor(int totalClients, Model _modelo){
        modelo = _modelo;
@@ -37,17 +38,18 @@ public class Servidor {
             //Creamos el servidor y le pasamos el puerto en el que escucha
             ss = new ServerSocket(portNumber);
             System.out.println("Servidor a la espera...");
-            
-            while(true){
+            //Combrobamos que no tengamos más conexiones de las que tenemos que tener
+            while(numeroConexiones <= modelo.getNumClientes()){
                 //Mientras nos estén llegando conexiones, las aceptamos
-                Socket sock = ss.accept();
+                sock = ss.accept();
                 //Creamos un nuevo socket al que le damos esa conexión y un id numérico
                 NuevaConexion conexion = new NuevaConexion(sock, nombre);
                 conexion.start();
-                //modelo.addHilo(conexion.crearHilo());
+                modelo.addHilo(conexion.crearHilo());
                 numeroConexiones++;
                 nombre++;
             }
+            
         }catch (SocketTimeoutException ste){
             //Si el Timeout llega a 0, salta el error
             System.out.println("Tiempo agotado.Conexiones realizadas: "+numeroConexiones);

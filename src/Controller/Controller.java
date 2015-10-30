@@ -6,7 +6,7 @@
 package Controller;
 
 import Model.Model;
-import View.*;
+import View.PrincipalWindow;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -18,39 +18,38 @@ public class Controller implements ActionListener{
     private final PrincipalWindow view;
     private Model model;
     private Servidor server;
-    private int numGrupos = 10;
-    private int numClientes = 60;
+    private int numGrupos;
+    private int numClientes;
+    private int numCiclos;
     
     
     public Controller (PrincipalWindow _view){
         view = _view;
         view.setActionListener((ActionListener)this);
-        model = new Model(numClientes, numGrupos);
-        this.iniciar(numClientes, model);
     }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
         String s = ae.getActionCommand();
         
-        
-        /*
-        
         if(s.equals("comenzar")){
             try{
                 numClientes = view.getNumClientes();
                 numGrupos = view.getNumGrupos();
+                numCiclos = view.getNumCiclos();
+                
                 view.swapPanel("waiting");
+                
                 if(comprobarNumero(numClientes, numGrupos)){
                     model = new Model(numClientes, numGrupos);
                     this.iniciar(numClientes, model);
-            }
+                }
             }catch(Exception e){
                 System.out.println("ERROR EN EL CAMBIO DE VENTANA");
             }
             
             
-        }*/
+        }
     }
     
     private void iniciar(int valor, Model model){

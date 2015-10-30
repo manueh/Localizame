@@ -12,29 +12,29 @@ public class PrincipalWindow extends javax.swing.JFrame {
      * Creates new form PrincipalWindow
      */
     
-    private Initial initial;
-    private Esperando waiting;
-    private CardLayout cl;
+    private final Initial initial;
+    private final Esperando waiting;
+    private final CardLayout cl;
     
     public PrincipalWindow() {
-        initComponents();
-        /**
-         * Cambiamos el Layout para trabajar con distintos paneles.
-         */
-        cl = new CardLayout();
-        this.setLayout(cl);
-        
         /**
          * Declaramos los paneles que vamos a usar
          */
         initial = new Initial();
-        add(initial, "initial");
         waiting = new Esperando();
-        add(waiting, "waiting");
         
+        /**
+         * Cambiamos el Layout para trabajar con distintos paneles.
+         */
+        cl = new CardLayout();
+        
+        initComponents();
         /**
          * Mostramos el panel inicial del programa
          */
+        this.setLayout(cl);
+        add(initial, "initial");
+        add(waiting, "waiting");
         cl.show(this.getContentPane(), "initial");
         
         this.setVisible(true);
@@ -81,7 +81,6 @@ public class PrincipalWindow extends javax.swing.JFrame {
      * @param name Nombre del panel a mostrar
      */
     public void swapPanel(String name){
-        System.out.println("Nombre del panel de cambio: "+name);
         cl.show(this.getContentPane(), name);
     }
     /**
@@ -94,5 +93,9 @@ public class PrincipalWindow extends javax.swing.JFrame {
     
     public int getNumGrupos(){
         return initial.getNumGrupos();
+    }
+    
+    public int getNumCiclos(){
+        return initial.getNumCiclos();
     }
 }

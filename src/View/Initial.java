@@ -34,6 +34,8 @@ public class Initial extends javax.swing.JPanel {
         jBstart = new javax.swing.JButton();
         jLnumGrupos = new javax.swing.JLabel();
         jTFnumGrupos = new javax.swing.JTextField();
+        jLNumCiclos = new javax.swing.JLabel();
+        jTNumCiclos = new javax.swing.JTextField();
 
         jLNumClients.setText("Introduce el número de clientes:");
 
@@ -61,6 +63,15 @@ public class Initial extends javax.swing.JPanel {
             }
         });
 
+        jLNumCiclos.setText("Introducir el número de ciclos:");
+
+        jTNumCiclos.setText("10");
+        jTNumCiclos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTNumCiclosActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -72,12 +83,14 @@ public class Initial extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLNumClients)
-                            .addComponent(jLnumGrupos))
+                            .addComponent(jLnumGrupos)
+                            .addComponent(jLNumCiclos))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTFNumClients)
-                            .addComponent(jTFnumGrupos))))
-                .addContainerGap(66, Short.MAX_VALUE))
+                            .addComponent(jTFNumClients, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+                            .addComponent(jTFnumGrupos)
+                            .addComponent(jTNumCiclos))))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -90,9 +103,13 @@ public class Initial extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLnumGrupos)
                     .addComponent(jTFnumGrupos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLNumCiclos)
+                    .addComponent(jTNumCiclos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                 .addComponent(jBstart, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -108,13 +125,19 @@ public class Initial extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTFnumGruposActionPerformed
 
+    private void jTNumCiclosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTNumCiclosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTNumCiclosActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBstart;
+    private javax.swing.JLabel jLNumCiclos;
     private javax.swing.JLabel jLNumClients;
     private javax.swing.JLabel jLnumGrupos;
     private javax.swing.JTextField jTFNumClients;
     private javax.swing.JTextField jTFnumGrupos;
+    private javax.swing.JTextField jTNumCiclos;
     // End of variables declaration//GEN-END:variables
 
     public void setActionListener(ActionListener al){
@@ -127,5 +150,9 @@ public class Initial extends javax.swing.JPanel {
     
     public int getNumGrupos(){
         return Integer.parseInt(jTFnumGrupos.getText());
+    }
+    
+    public int getNumCiclos(){
+        return Integer.parseInt(jTNumCiclos.getText());
     }
 }
