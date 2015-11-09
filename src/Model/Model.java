@@ -8,12 +8,12 @@ import java.util.ArrayList;
 
  
 public class Model {
-    private Hilo[][] conexiones;
+    private Hilo[][] conexiones; //array donde se guardan los hilos
     private int numClientes;
     private int numGrupos;
     private int numCPG;
     
-    public Model(int _numClientes, int _numGrupos){
+    public Model(int _numClientes, int _numGrupos){ //se le da el tamanyo al array
         numClientes = _numClientes;
         numGrupos = _numGrupos;
         numCPG = numClientes / numGrupos;
@@ -48,21 +48,23 @@ public class Model {
         return grupoTrabajo;
     }
     
-    public void addHilo(Hilo h){
+    public void addHilo(Hilo h){ //servidor o controlador le manda al modelo el numero de hilos
         for(int i = 0; i < numGrupos; i++){
             for(int j = 0; j < numCPG; j++){
-                conexiones[i][j] = h;
+                if(conexiones[i][j] == null)
+                    conexiones[i][j]= h;
             }
         }
+        mostrarArrayGrupos();
     }
     
     public void mostrarArrayGrupos(){
-        System.out.println("Array de conexiones: /n");
+        System.out.println("Array de conexiones: \n\n");
         for(int i = 0; i < numGrupos; i++){
             for(int j = 0; j < numCPG; j++){
-                System.out.println("Grupo: "+i+"/n");
-                System.out.println("Número de cliente: "+j+"/n");
-                System.out.println("Identificador del cliente: "+conexiones[i][j].getID()+"/n");
+                System.out.println("Grupo: "+i);
+                System.out.println("Número de cliente: "+j);
+                System.out.println("Identificador del cliente: "+conexiones[i][j].getID()+"\n");
             }
         }
     }

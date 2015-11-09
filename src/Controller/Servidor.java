@@ -45,19 +45,17 @@ public class Servidor {
                 //Creamos un nuevo socket al que le damos esa conexión y un id numérico
                 NuevaConexion conexion = new NuevaConexion(sock, nombre);
                 conexion.start();
-                modelo.addHilo(conexion.crearHilo());
+                //modelo.addHilo(conexion.getHilo());
                 numeroConexiones++;
                 nombre++;
             }
-            
         }catch (SocketTimeoutException ste){
             //Si el Timeout llega a 0, salta el error
-            System.out.println("Tiempo agotado.Conexiones realizadas: "+numeroConexiones);
+            System.out.println("[ERROR] Tiempo agotado.Conexiones realizadas: " + numeroConexiones);
         }catch (Exception e){
-            
-            numeroConexiones--;
             //Cada vez que termina una conexión lo mostramos por pantalla.
-            System.out.println("Conexión cerrada.");
+            numeroConexiones--;            
+            System.out.println("[Excp] Conexión cerrada.");
         }
     }
     

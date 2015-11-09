@@ -7,38 +7,39 @@ package Model;
 
 /**
  *
- * @author Jorge
+ * @author 2_4
  */
 public class Hilo {
     
-    private int posicionX;
-    private int posicionY;
+    private int idHilo;
+    Thread h;
+    private double coordx, coordy;
     private String id;
     
-    public Hilo(String _id, int _posicionX, int _posicionY){
+    public Hilo(String _id, int _coordx, int _coordy){
         id = _id;
-        posicionX = _posicionX;
-        posicionY = _posicionY;
+        coordx = _coordx;
+        coordy = _coordy;
     }
     
     public void setPosicionX(int _posicionX){
-        posicionX = _posicionX;
+        coordx = _posicionX;
     }
     
     public void setPosicionY(int _posicionY){
-        posicionY = _posicionY;
+        coordy = _posicionY;
     }
     
     public void setID(String _id){
         id = _id;
     }
     
-    public int getPosicionX(){
-        return posicionX;
+    public double getPosicionX(){
+        return coordx;
     }
     
-    public int getPosicionY(){
-        return posicionY;
+    public double getPosicionY(){
+        return coordy;
     }
     
     public String getID(){

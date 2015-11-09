@@ -6,7 +6,9 @@
 package localizame;
 
 import Controller.Controller;
+import Controller.NuevaConexion;
 import View.*;
+import java.net.Socket;
 
 public class Main {
     public static void main(String[] args) {
