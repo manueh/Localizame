@@ -12,14 +12,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author 2_4
  */
-public class NuevaConexion extends Thread{
+public class NuevaConexion implements Runnable{
     /**
      * Variables para la conexión y el envío y recepción de mensajes
      */
@@ -34,7 +32,7 @@ public class NuevaConexion extends Thread{
      * Mensajes que enviamos
      */
     private final String conectado = "Conexión creada, mantente a la espera.";
-    private final String empezar = "Comenzar envio de coordenadas";
+    private final String empezar = "Comenzar";
     private final String recibido = "Coordenadas recibidas";
     
     private final int nombre;
@@ -45,7 +43,6 @@ public class NuevaConexion extends Thread{
     public NuevaConexion (Socket _socket, int _nombre){
         sock = _socket;
         nombre = _nombre;
-        System.out.println("SOCKET -->"+nombre);
     }
     
     @Override
@@ -54,16 +51,21 @@ public class NuevaConexion extends Thread{
             salidatxt = new DataOutputStream(sock.getOutputStream());
             salidatxt.writeUTF(conectado);
             salidatxt.flush();
+            //salidatxt.close();
             
             entradatxt = new DataInputStream(sock.getInputStream());
-            this.wait();
-            System.out.println("Salida: "+conectado);
+            
             System.out.println("ENTRADA: "+entradatxt.readUTF());
             
         } catch (IOException ex) {
             System.out.println("[ERROR] Socket " + nombre + " finalizado.");
+        }
+        try {
+            this.wait();
+            System.out.println("HE DESPERTADO "+nombre);
+            Empezar();
         } catch (InterruptedException ex) {
-            Logger.getLogger(NuevaConexion.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("NO ME PUEDO PONER EN ESPERA");
         }
     }
 
@@ -71,12 +73,16 @@ public class NuevaConexion extends Thread{
         return hilo;
     }
     
-    public void Empezar(){
+    public synchronized void Empezar(){
         System.out.println("VAMOS A EMPEZAR CONEXION: "+nombre);
         try {
-            salidatxt = new DataOutputStream(sock.getOutputStream());
+            
+            System.out.println("HE ENTRADO EN EL TRY "+ nombre);
             salidatxt.writeUTF(empezar);
             salidatxt.flush();
+            System.out.println("JUSTO ANTES DEL NOTIFY ALL");
+            RecepcionHilo();
+            System.out.println("HE PASADO EL NOTIFYALL");
         } catch (IOException ex) {
             System.out.println("[ERROR] No se ha podido enviar el mensaje de empezar.");
         }
@@ -88,6 +94,7 @@ public class NuevaConexion extends Thread{
             entradaObj = new ObjectInputStream(sock.getInputStream());
             try {
                 hilo = (Hilo) entradaObj.readObject();
+                System.out.println("HILO CREADO");
                 coordX = hilo.getPosicionX();
                 coordY = hilo.getPosicionY();
 
@@ -96,6 +103,8 @@ public class NuevaConexion extends Thread{
             } catch (ClassNotFoundException ex) {
                 System.out.println("[ERROR]  Imposible realizar el casteo");
             }
+            
+            System.out.println("SUPERADO EL TRY DE LA CREACION DEL HILO");
 
             try {
                 System.out.println("MANDO EL MENSAJE DE ESPERA OTRA VEZ");
@@ -109,4 +118,10 @@ public class NuevaConexion extends Thread{
             System.out.println("[ERROR]");
         }
     }
+    
+    public synchronized void Despertar(){
+        this.notifyAll();
+    }
+    
+    
 }

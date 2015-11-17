@@ -2,6 +2,7 @@ package Controller;
 
 import Model.Model;
 import java.net.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -35,7 +36,7 @@ public class Servidor {
        iniciarServer();
     }
     
-    private void iniciarServer(){
+    private synchronized void iniciarServer(){
         try{
             //Creamos el servidor y le pasamos el puerto en el que escucha
             ss = new ServerSocket(portNumber);
@@ -46,18 +47,16 @@ public class Servidor {
                 sock = ss.accept();
                 //Creamos un nuevo socket al que le damos esa conexión y un id numérico
                 NuevaConexion conexion = new NuevaConexion(sock, nombre);
-                conexion.start();
+                Thread union = new Thread(conexion);
+                union.start();
+                
                 vectorConexiones[numeroConexiones] = conexion;
                 numeroConexiones++;
                 nombre++;
             }
             System.out.println("TODAS LAS CONEXIONES CREADAS CORRECTAMENTE");
             
-            for(int i = 0; i <= numeroConexiones; i++){
-                vectorConexiones.notifyAll();
-                vectorConexiones[i].Empezar();
-                //vectorConexiones[i].RecepcionHilo();
-            }
+            vectorConexiones[5].Despertar();
         }catch (SocketTimeoutException ste){
             //Si el Timeout llega a 0, salta el error
             System.out.println("[ERROR] Tiempo agotado.Conexiones realizadas: " + numeroConexiones);
@@ -66,6 +65,7 @@ public class Servidor {
             numeroConexiones--;            
             System.out.println("[Excp] Conexión cerrada.");
         }
+        System.out.println("ESTOY EN EL SERVIDOR DE NUEVO");
     }
     
 }

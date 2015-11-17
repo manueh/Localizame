@@ -39,7 +39,7 @@ public class Initial extends javax.swing.JPanel {
 
         jLNumClients.setText("Introduce el número de clientes:");
 
-        jTFNumClients.setText("60");
+        jTFNumClients.setText("10");
         jTFNumClients.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTFNumClientsActionPerformed(evt);
