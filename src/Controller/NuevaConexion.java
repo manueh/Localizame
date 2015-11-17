@@ -49,19 +49,21 @@ public class NuevaConexion extends Thread{
     }
     
     @Override
-    public void run(){
+    public synchronized void run(){
         try {
             salidatxt = new DataOutputStream(sock.getOutputStream());
             salidatxt.writeUTF(conectado);
             salidatxt.flush();
             
             entradatxt = new DataInputStream(sock.getInputStream());
-     
+            this.wait();
             System.out.println("Salida: "+conectado);
             System.out.println("ENTRADA: "+entradatxt.readUTF());
             
         } catch (IOException ex) {
             System.out.println("[ERROR] Socket " + nombre + " finalizado.");
+        } catch (InterruptedException ex) {
+            Logger.getLogger(NuevaConexion.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

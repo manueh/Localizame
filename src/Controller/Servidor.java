@@ -53,10 +53,9 @@ public class Servidor {
             }
             System.out.println("TODAS LAS CONEXIONES CREADAS CORRECTAMENTE");
             
-            vectorConexiones.notifyAll();
-            
             for(int i = 0; i <= numeroConexiones; i++){
-                //vectorConexiones[i].Empezar();
+                vectorConexiones.notifyAll();
+                vectorConexiones[i].Empezar();
                 //vectorConexiones[i].RecepcionHilo();
             }
         }catch (SocketTimeoutException ste){
