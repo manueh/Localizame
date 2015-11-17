@@ -15,6 +15,7 @@ public class Servidor {
     private ServerSocket ss;
     private Socket sock;
     private int nombre = 0;
+    private NuevaConexion[] vectorConexiones;
         
     /**
      * Puerto en el que escucha el servidor
@@ -30,6 +31,7 @@ public class Servidor {
      */
     public Servidor(int totalClients, Model _modelo){
        modelo = _modelo;
+       vectorConexiones = new NuevaConexion[totalClients];
        iniciarServer();
     }
     
@@ -39,15 +41,24 @@ public class Servidor {
             ss = new ServerSocket(portNumber);
             System.out.println("Servidor a la espera...");
             //Combrobamos que no tengamos más conexiones de las que tenemos que tener
-            while(numeroConexiones <= modelo.getNumClientes()){
+            while(numeroConexiones < modelo.getNumClientes()){
                 //Mientras nos estén llegando conexiones, las aceptamos
                 sock = ss.accept();
                 //Creamos un nuevo socket al que le damos esa conexión y un id numérico
                 NuevaConexion conexion = new NuevaConexion(sock, nombre);
                 conexion.start();
-                //modelo.addHilo(conexion.getHilo());
+                conexion.wait();
+                vectorConexiones[numeroConexiones] = conexion;
                 numeroConexiones++;
                 nombre++;
+            }
+            System.out.println("TODAS LAS CONEXIONES CREADAS CORRECTAMENTE");
+            
+            vectorConexiones.notifyAll();
+            
+            for(int i = 0; i <= numeroConexiones; i++){
+                //vectorConexiones[i].Empezar();
+                //vectorConexiones[i].RecepcionHilo();
             }
         }catch (SocketTimeoutException ste){
             //Si el Timeout llega a 0, salta el error

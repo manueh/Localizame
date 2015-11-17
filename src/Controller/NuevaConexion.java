@@ -10,6 +10,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,51 +20,46 @@ import java.util.logging.Logger;
  * @author 2_4
  */
 public class NuevaConexion extends Thread{
-    
+    /**
+     * Variables para la conexión y el envío y recepción de mensajes
+     */
     private Object objeto;
     private final Socket sock;
-    private ObjectInputStream entrada;
-    private DataInputStream mens;
-    private DataOutputStream salida;
-    private String mensaje;
+    private ObjectInputStream entradaObj;
+    private DataInputStream entradatxt;
+    private ObjectOutputStream salidaObj;
+    private DataOutputStream salidatxt;
+    
+    /**
+     * Mensajes que enviamos
+     */
+    private final String conectado = "Conexión creada, mantente a la espera.";
+    private final String empezar = "Comenzar envio de coordenadas";
+    private final String recibido = "Coordenadas recibidas";
+    
     private final int nombre;
     private double coordX, coordY;
-    /*private String idHilo = "";
-    private int posicionX = 0;
-    private int posicionY = 0;*/
     private Hilo hilo;
+    
     
     public NuevaConexion (Socket _socket, int _nombre){
         sock = _socket;
         nombre = _nombre;
-        //hilo = new Hilo("",0,0);
         System.out.println("SOCKET -->"+nombre);
     }
     
     @Override
     public void run(){
         try {
-            System.out.println("LLEGO AL START");
-            entrada = new ObjectInputStream(new DataInputStream(sock.getInputStream()));
-            mens = new DataInputStream(new DataInputStream(sock.getInputStream()));
-            salida = new DataOutputStream(sock.getOutputStream());
-            System.out.println("ENTRADA: "+mens.toString());
-            if(entrada.readUTF() != null){
-                try {
-                    hilo = (Hilo) entrada.readObject();
-                    coordX = hilo.getPosicionX();
-                    coordY = hilo.getPosicionY();
-                    System.out.println("x: " + coordX + "   Y: " + coordY);
-                    //objeto = (Hilo) entrada.readObject();
-                
-                } catch (ClassNotFoundException ex) {
-                    System.out.println("[ERROR]  Imposible realizar el casteo");
-                }
-                salida.writeUTF("Mantente a la espera.");
-            }
+            salidatxt = new DataOutputStream(sock.getOutputStream());
+            salidatxt.writeUTF(conectado);
+            salidatxt.flush();
             
-            salida.writeUTF("Conectado en el socket " + nombre + ".");
-           
+            entradatxt = new DataInputStream(sock.getInputStream());
+     
+            System.out.println("Salida: "+conectado);
+            System.out.println("ENTRADA: "+entradatxt.readUTF());
+            
         } catch (IOException ex) {
             System.out.println("[ERROR] Socket " + nombre + " finalizado.");
         }
@@ -71,5 +67,44 @@ public class NuevaConexion extends Thread{
 
     public Hilo getHilo(){
         return hilo;
+    }
+    
+    public void Empezar(){
+        System.out.println("VAMOS A EMPEZAR CONEXION: "+nombre);
+        try {
+            salidatxt = new DataOutputStream(sock.getOutputStream());
+            salidatxt.writeUTF(empezar);
+            salidatxt.flush();
+        } catch (IOException ex) {
+            System.out.println("[ERROR] No se ha podido enviar el mensaje de empezar.");
+        }
+    }
+    
+    public void RecepcionHilo(){
+        try {
+            System.out.println("Intentamos recepcionar el hilo");
+            entradaObj = new ObjectInputStream(sock.getInputStream());
+            try {
+                hilo = (Hilo) entradaObj.readObject();
+                coordX = hilo.getPosicionX();
+                coordY = hilo.getPosicionY();
+
+                System.out.println("HILO "+ hilo.getID()+" creado con las coordenadas X = "+hilo.getPosicionX()+" Y = "+hilo.getPosicionY());
+                
+            } catch (ClassNotFoundException ex) {
+                System.out.println("[ERROR]  Imposible realizar el casteo");
+            }
+
+            try {
+                System.out.println("MANDO EL MENSAJE DE ESPERA OTRA VEZ");
+                salidatxt = new DataOutputStream(sock.getOutputStream());
+                salidatxt.writeUTF("Mantente a la espera.");
+                salidatxt.flush();
+            } catch (IOException ex) {
+                System.out.println("[ERROR]  No se puede enviar el segundo mensaje.");
+            }
+        } catch (IOException ex) {
+            System.out.println("[ERROR]");
+        }
     }
 }
