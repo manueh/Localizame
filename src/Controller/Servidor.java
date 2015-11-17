@@ -47,7 +47,6 @@ public class Servidor {
                 //Creamos un nuevo socket al que le damos esa conexión y un id numérico
                 NuevaConexion conexion = new NuevaConexion(sock, nombre);
                 conexion.start();
-                conexion.wait();
                 vectorConexiones[numeroConexiones] = conexion;
                 numeroConexiones++;
                 nombre++;
