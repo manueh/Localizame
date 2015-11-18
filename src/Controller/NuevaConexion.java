@@ -6,6 +6,7 @@
 package Controller;
 
 import Model.Hilo;
+import Model.Paquete;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -23,11 +24,11 @@ public class NuevaConexion implements Runnable{
      */
     private Object objeto;
     private final Socket sock;
-    private ObjectInputStream entradaObj;
+    private ObjectInputStream entradaObj = null;
     private DataInputStream entradatxt;
-    private ObjectOutputStream salidaObj;
+    private ObjectOutputStream salidaObj = null;
     private DataOutputStream salidatxt;
-    
+    private Paquete p;
     /**
      * Mensajes que enviamos
      */
@@ -37,8 +38,7 @@ public class NuevaConexion implements Runnable{
     
     private final int nombre;
     private double coordX, coordY;
-    private Hilo hilo;
-    
+    private int id;
     
     public NuevaConexion (Socket _socket, int _nombre){
         sock = _socket;
@@ -61,44 +61,39 @@ public class NuevaConexion implements Runnable{
             System.out.println("[ERROR] Socket " + nombre + " finalizado.");
         }
         try {
-            this.wait();
+            this.wait(5000);
             System.out.println("HE DESPERTADO "+nombre);
             Empezar();
         } catch (InterruptedException ex) {
             System.out.println("NO ME PUEDO PONER EN ESPERA");
         }
     }
-
-    public Hilo getHilo(){
-        return hilo;
-    }
     
     public synchronized void Empezar(){
         System.out.println("VAMOS A EMPEZAR CONEXION: "+nombre);
         try {
-            
-            System.out.println("HE ENTRADO EN EL TRY "+ nombre);
             salidatxt.writeUTF(empezar);
             salidatxt.flush();
-            System.out.println("JUSTO ANTES DEL NOTIFY ALL");
-            RecepcionHilo();
-            System.out.println("HE PASADO EL NOTIFYALL");
+            RecepcionPaquete();
         } catch (IOException ex) {
             System.out.println("[ERROR] No se ha podido enviar el mensaje de empezar.");
         }
     }
     
-    public void RecepcionHilo(){
+    public void RecepcionPaquete(){
+        Object ent = null;
         try {
-            System.out.println("Intentamos recepcionar el hilo");
+            System.out.println("Socket "+ nombre+": Intentamos recepcionar el hilo");
             entradaObj = new ObjectInputStream(sock.getInputStream());
             try {
-                hilo = (Hilo) entradaObj.readObject();
-                System.out.println("HILO CREADO");
-                coordX = hilo.getPosicionX();
-                coordY = hilo.getPosicionY();
+                ent = (Object) entradaObj.readObject();
+                System.out.println("Paquete Recibido");
+                p = (Paquete)ent;
+                id = p.getID();
+                coordX = p.getX();
+                coordY = p.getY();
 
-                System.out.println("HILO "+ hilo.getID()+" creado con las coordenadas X = "+hilo.getPosicionX()+" Y = "+hilo.getPosicionY());
+                System.out.println("Paquete "+ p.getID()+" creado con las coordenadas X = "+coordX+" Y = "+coordY);
                 
             } catch (ClassNotFoundException ex) {
                 System.out.println("[ERROR]  Imposible realizar el casteo");
@@ -115,7 +110,7 @@ public class NuevaConexion implements Runnable{
                 System.out.println("[ERROR]  No se puede enviar el segundo mensaje.");
             }
         } catch (IOException ex) {
-            System.out.println("[ERROR]");
+            System.out.println("[ERROR] No se ha obtenido el objeto");
         }
     }
     
