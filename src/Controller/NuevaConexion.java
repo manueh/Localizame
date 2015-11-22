@@ -82,13 +82,9 @@ public class NuevaConexion implements Runnable, Serializable{
         try {
             System.out.println("Socket "+ nombre+": Intentamos recibir el paquete");
             entradaObj = new ObjectInputStream(sock.getInputStream());
-            System.out.println("Socket "+ nombre+": Intentamos recepcionar el hilo");
             try {
                 aux = entradaObj.readObject();
                 p = (Paquete)aux;
-                
-                entradaObj = new ObjectInputStream(sock.getInputStream());
-                p = (Paquete)entradaObj.readObject();
                 System.out.println("Paquete Recibido");
                 
                 id = p.getID();
