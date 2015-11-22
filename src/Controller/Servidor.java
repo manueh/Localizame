@@ -2,7 +2,6 @@ package Controller;
 
 import Model.Model;
 import java.net.*;
-import java.util.ArrayList;
 
 /**
  *
@@ -65,7 +64,6 @@ public class Servidor {
             numeroConexiones--;            
             System.out.println("[Excp] Conexión cerrada.");
         }
-        System.out.println("ESTOY EN EL SERVIDOR DE NUEVO");
     }
     
 }

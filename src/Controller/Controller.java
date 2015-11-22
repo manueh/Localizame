@@ -10,10 +10,6 @@ import View.PrincipalWindow;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
- *
- * @author Jorge
- */
 public class Controller implements ActionListener{
     private final PrincipalWindow view;
     private Model model;

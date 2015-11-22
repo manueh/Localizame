@@ -5,28 +5,26 @@
  */
 package Controller;
 
-import Model.Hilo;
-import Model.Paquete;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.Socket;
 
 /**
  *
  * @author 2_4
  */
-public class NuevaConexion implements Runnable{
+public class NuevaConexion implements Runnable, Serializable{
     /**
      * Variables para la conexión y el envío y recepción de mensajes
      */
-    private Object objeto;
-    private final Socket sock;
-    private ObjectInputStream entradaObj = null;
+    private Socket sock;
+    private ObjectInputStream entradaObj;
     private DataInputStream entradatxt;
-    private ObjectOutputStream salidaObj = null;
+    private ObjectOutputStream salidaObj;
     private DataOutputStream salidatxt;
     private Paquete p;
     /**
@@ -51,7 +49,6 @@ public class NuevaConexion implements Runnable{
             salidatxt = new DataOutputStream(sock.getOutputStream());
             salidatxt.writeUTF(conectado);
             salidatxt.flush();
-            //salidatxt.close();
             
             entradatxt = new DataInputStream(sock.getInputStream());
             
@@ -62,7 +59,6 @@ public class NuevaConexion implements Runnable{
         }
         try {
             this.wait(5000);
-            System.out.println("HE DESPERTADO "+nombre);
             Empezar();
         } catch (InterruptedException ex) {
             System.out.println("NO ME PUEDO PONER EN ESPERA");
@@ -81,14 +77,13 @@ public class NuevaConexion implements Runnable{
     }
     
     public void RecepcionPaquete(){
-        Object ent = null;
         try {
             System.out.println("Socket "+ nombre+": Intentamos recepcionar el hilo");
-            entradaObj = new ObjectInputStream(sock.getInputStream());
+            
             try {
-                ent = (Object) entradaObj.readObject();
+                entradaObj = new ObjectInputStream(sock.getInputStream());
+                p = (Paquete)entradaObj.readObject();
                 System.out.println("Paquete Recibido");
-                p = (Paquete)ent;
                 id = p.getID();
                 coordX = p.getX();
                 coordY = p.getY();
@@ -96,13 +91,10 @@ public class NuevaConexion implements Runnable{
                 System.out.println("Paquete "+ p.getID()+" creado con las coordenadas X = "+coordX+" Y = "+coordY);
                 
             } catch (ClassNotFoundException ex) {
-                System.out.println("[ERROR]  Imposible realizar el casteo");
+                System.out.println("[ERROR]  Imposible realizar el casteo del socket "+nombre);
+                ex.printStackTrace();
             }
-            
-            System.out.println("SUPERADO EL TRY DE LA CREACION DEL HILO");
-
             try {
-                System.out.println("MANDO EL MENSAJE DE ESPERA OTRA VEZ");
                 salidatxt = new DataOutputStream(sock.getOutputStream());
                 salidatxt.writeUTF("Mantente a la espera.");
                 salidatxt.flush();
