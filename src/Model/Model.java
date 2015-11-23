@@ -89,8 +89,9 @@ public class Model {
         for(int i = 0; i < numGrupos; i++){
             for(int j = 0; j < numCPG; j++){
                 aux = j;
-                for(int k = 0; k< numCPG; k++){
+                for(int k = 0; k < numCPG; k++){
                     if(aux != k){
+                        
                         paqueteaux = conexiones[i][k].getP();
                         conexiones[i][k].EnviarPaquete(paqueteaux);
                     }
