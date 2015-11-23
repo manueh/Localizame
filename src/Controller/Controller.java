@@ -28,23 +28,29 @@ public class Controller implements ActionListener{
     public void actionPerformed(ActionEvent ae) {
         String s = ae.getActionCommand();
         
-        if(s.equals("comenzar")){
-            try{
-                numClientes = view.getNumClientes();
-                numGrupos = view.getNumGrupos();
-                numCiclos = view.getNumCiclos();
-                
-                view.swapPanel("waiting");
-                
-                if(comprobarNumero(numClientes, numGrupos)){
-                    model = new Model(numClientes, numGrupos);
-                    this.iniciar(numClientes, model);
+        switch (s){
+            case "comenzar":
+                try{
+                    numClientes = view.getNumClientes();
+                    numGrupos = view.getNumGrupos();
+                    numCiclos = view.getNumCiclos();
+
+                    view.swapPanel("waiting");
+
+                    if(comprobarNumero(numClientes, numGrupos)){
+                        model = new Model(numClientes, numGrupos);
+                        this.iniciar(numClientes, model);
+                    }
+                }catch(Exception e){
+                    System.out.println("ERROR EN EL CAMBIO DE VENTANA");
                 }
-            }catch(Exception e){
-                System.out.println("ERROR EN EL CAMBIO DE VENTANA");
-            }
-            
-            
+                break;
+            case "Localizar":
+                model.Empezar();
+                System.out.println("TODO RECIBIDO");
+                model.EnviarPaquete();
+                System.out.println("ENVIANDO PAQUETES");
+                break;
         }
     }
     

@@ -3,6 +3,8 @@
  */
 package View;
 
+import java.awt.event.ActionListener;
+
 public class Esperando extends javax.swing.JPanel {
 
     /**
@@ -26,7 +28,7 @@ public class Esperando extends javax.swing.JPanel {
         jLnumConexiones = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLnumConexTotal = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jBLocalizar = new javax.swing.JButton();
 
         jLabel1.setText("Esperando a todas las conexiones...");
 
@@ -38,10 +40,10 @@ public class Esperando extends javax.swing.JPanel {
 
         jLnumConexTotal.setText("jLabel5");
 
-        jButton1.setText("Localizar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jBLocalizar.setText("Localizar");
+        jBLocalizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jBLocalizarActionPerformed(evt);
             }
         });
 
@@ -52,7 +54,7 @@ public class Esperando extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(49, 49, 49)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jBLocalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(jLabel2)
@@ -77,18 +79,18 @@ public class Esperando extends javax.swing.JPanel {
                     .addComponent(jLabel4)
                     .addComponent(jLnumConexTotal))
                 .addGap(54, 54, 54)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jBLocalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(61, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jBLocalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBLocalizarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jBLocalizarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jBLocalizar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
@@ -102,6 +104,10 @@ public class Esperando extends javax.swing.JPanel {
     
     public void setConexiones(int conexiones){
        jLnumConexiones.setText(String.valueOf(conexiones));
+    }
+    
+    public void setActionListener(ActionListener al){
+        jBLocalizar.addActionListener(al);
     }
 
 }

@@ -51,7 +51,7 @@ public class Model {
     public ArrayList getGrupoTrabajo(int grupo){
         ArrayList grupoTrabajo = new ArrayList();
         
-            for(int i = 0; i <= numCPG; i++){
+            for(int i = 0; i < numCPG; i++){
                 grupoTrabajo.add(conexiones[grupo][i]);
             }
         
@@ -73,8 +73,38 @@ public class Model {
         System.out.println("FILA: "+fila);
         System.out.println("COLUMNA: "+columna);
         conexiones[fila][columna] = nueva;                
-        if((fila == numGrupos) && (columna == numCPG)){
-            mostrarArrayGrupos();
+    }
+    
+    public void Empezar(){
+        for(int i = 0; i < numGrupos; i++){
+            for(int j = 0; j < numCPG; j++){
+                conexiones[i][j].Empezar();
+            }
+        }
+    }
+    
+    public void EnviarPaquete(){
+        int aux;
+        Paquete paqueteaux;
+        for(int i = 0; i < numGrupos; i++){
+            for(int j = 0; j < numCPG; j++){
+                aux = j;
+                for(j = 0; j< numCPG; j++){
+                    if(aux!= j){
+                        paqueteaux = conexiones[i][j].getP();
+                        conexiones[i][j].EnviarPaquete(paqueteaux);
+                    }
+                }
+                j = aux;
+            }
+        }
+    }
+    
+    public void EnviarNumVecinos(){
+        for(int i = 0; i < numGrupos; i++){
+            for(int j = 0; j < numCPG; j++){
+                conexiones[i][j].EnviarNumVecinos(numCPG-1);
+            }
         }
     }
 }

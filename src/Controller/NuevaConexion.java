@@ -13,6 +13,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -28,6 +30,8 @@ public class NuevaConexion implements Runnable, Serializable{
     private ObjectOutputStream salidaObj;
     private DataOutputStream salidatxt;
     private Paquete p;
+
+    
     /**
      * Mensajes que enviamos
      */
@@ -59,15 +63,14 @@ public class NuevaConexion implements Runnable, Serializable{
             System.out.println("[ERROR] Socket " + nombre + " finalizado.");
         }
         try {
-            this.wait(1000);
-            Empezar();
+            this.wait(100);
         } catch (InterruptedException ex) {
             System.out.println("NO ME PUEDO PONER EN ESPERA");
         }
     }
     
     public synchronized void Empezar(){
-        System.out.println("VAMOS A EMPEZAR CONEXION: "+nombre);
+        System.out.println("VAMOS A EMPEZAR LA RECEPCIÓN: "+nombre);
         try {
             salidatxt.writeUTF(empezar);
             salidatxt.flush();
@@ -111,5 +114,40 @@ public class NuevaConexion implements Runnable, Serializable{
     }
     public int getNombre() {
         return nombre;
+    }
+    
+    public void EnviarPaquete(Paquete p){
+        try {
+            salidatxt = new DataOutputStream(sock.getOutputStream());
+            salidatxt.writeUTF("Te envio a tus vecinos.");
+            salidatxt.flush();
+            
+            salidaObj = new ObjectOutputStream(sock.getOutputStream());
+            salidaObj.writeObject(p);
+            salidaObj.flush();
+        } catch (IOException ex) {
+            Logger.getLogger(NuevaConexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public Paquete getP() {
+        return p;
+    }
+    
+    public void EnviarNumVecinos(int x){
+        String aux;
+        aux = String.valueOf(x);
+        try {
+            salidatxt = new DataOutputStream(sock.getOutputStream());
+            salidatxt.writeUTF("Numero Vecinos");
+            salidatxt.flush();
+            
+            salidatxt = new DataOutputStream(sock.getOutputStream());
+            salidatxt.writeUTF(aux);
+            salidatxt.flush();
+        } catch (IOException ex) {
+            Logger.getLogger(NuevaConexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 }

@@ -75,6 +75,7 @@ public class PrincipalWindow extends javax.swing.JFrame {
      */
     public void setActionListener (ActionListener al){
         initial.setActionListener(al);
+        waiting.setActionListener(al);
     }
     /**
      * Función para cambiar los paneles que tenemos que mostrar

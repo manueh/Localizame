@@ -47,21 +47,22 @@ public class Servidor {
                 //Creamos un nuevo socket al que le damos esa conexión y un id numérico
                 NuevaConexion conexion = new NuevaConexion(sock, nombre);
                 conexion.run();
-            
-                
-                
-                if(numColumna == modelo.getNumCPG()){
+                //Añadimos las conexiones en el modelo para tener organizados los grupos
+                modelo.addConexion(conexion, numfila, numColumna);
+                if(numColumna == modelo.getNumCPG()-1){
                     numfila++;
                     numColumna = 0;
                 }else{
-                    modelo.addConexion(conexion, numfila, numColumna);
                     numColumna++;
                 }
-                
+                //Incrementamos el contador de conexiones y el nombre del socket
                 numeroConexiones++;
                 nombre++;
             }
+            
             System.out.println("TODAS LAS CONEXIONES CREADAS CORRECTAMENTE");
+            modelo.EnviarNumVecinos();
+            
         }catch (SocketTimeoutException ste){
             //Si el Timeout llega a 0, salta el error
             System.out.println("[ERROR] Tiempo agotado.Conexiones realizadas: " + numeroConexiones);
