@@ -59,7 +59,7 @@ public class NuevaConexion implements Runnable, Serializable{
             System.out.println("[ERROR] Socket " + nombre + " finalizado.");
         }
         try {
-            this.wait(3000);
+            this.wait(1000);
             Empezar();
         } catch (InterruptedException ex) {
             System.out.println("NO ME PUEDO PONER EN ESPERA");
@@ -107,11 +107,9 @@ public class NuevaConexion implements Runnable, Serializable{
         } catch (IOException ex) {
             System.out.println("[ERROR] No se ha obtenido el objeto");
         }
+        
     }
-    
-    public synchronized void Despertar(){
-        this.notifyAll();
+    public int getNombre() {
+        return nombre;
     }
-    
-    
 }

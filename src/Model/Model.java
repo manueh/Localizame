@@ -4,11 +4,12 @@
  */
 package Model;
 
+import Controller.NuevaConexion;
 import java.util.ArrayList;
 
  
 public class Model {
-    private Hilo[][] conexiones; //array donde se guardan los hilos
+    private NuevaConexion[][] conexiones; //array donde se guardan los hilos
     private int numClientes;
     private int numGrupos;
     private int numCPG;
@@ -18,9 +19,18 @@ public class Model {
         numGrupos = _numGrupos;
         numCPG = numClientes / numGrupos;
         try{
-            conexiones = new Hilo[numGrupos][numClientes];
+            conexiones = new NuevaConexion[numGrupos][numCPG];
+            System.out.println("Numero de grupos " + numGrupos + "Numero MAX: " + numCPG);
         }catch (Exception e){}
 }
+
+    public int getNumCPG() {
+        return numCPG;
+    }
+
+    public void setNumCPG(int numCPG) {
+        this.numCPG = numCPG;
+    }
     
     public void setNumClientes(int _numClientes){
         numClientes = _numClientes;
@@ -48,24 +58,23 @@ public class Model {
         return grupoTrabajo;
     }
     
-    public void addHilo(Hilo h){ //servidor o controlador le manda al modelo el numero de hilos
-        for(int i = 0; i < numGrupos; i++){
-            for(int j = 0; j < numCPG; j++){
-                if(conexiones[i][j] == null)
-                    conexiones[i][j]= h;
-            }
-        }
-        mostrarArrayGrupos();
-    }
-    
     public void mostrarArrayGrupos(){
         System.out.println("Array de conexiones: \n\n");
         for(int i = 0; i < numGrupos; i++){
             for(int j = 0; j < numCPG; j++){
                 System.out.println("Grupo: "+i);
                 System.out.println("Número de cliente: "+j);
-                System.out.println("Identificador del cliente: "+conexiones[i][j].getID()+"\n");
+                System.out.println("Identificador del cliente: "+conexiones[i][j].getNombre()+"\n");
             }
+        }
+    }
+    
+    public void addConexion(NuevaConexion nueva, int fila, int columna){
+        System.out.println("FILA: "+fila);
+        System.out.println("COLUMNA: "+columna);
+        conexiones[fila][columna] = nueva;                
+        if((fila == numGrupos) && (columna == numCPG)){
+            mostrarArrayGrupos();
         }
     }
 }

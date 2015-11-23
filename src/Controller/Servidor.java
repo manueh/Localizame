@@ -15,13 +15,14 @@ public class Servidor {
     private ServerSocket ss;
     private Socket sock;
     private int nombre = 0;
-    private NuevaConexion[] vectorConexiones;
         
     /**
      * Puerto en el que escucha el servidor
      */
     private final int portNumber = 5000;
     private int numeroConexiones = 0;
+    private int numfila = 0;
+    private int numColumna = 0;
     private final Model modelo;
     
     /**
@@ -31,7 +32,6 @@ public class Servidor {
      */
     public Servidor(int totalClients, Model _modelo){
        modelo = _modelo;
-       vectorConexiones = new NuevaConexion[totalClients];
        iniciarServer();
     }
     
@@ -46,16 +46,22 @@ public class Servidor {
                 sock = ss.accept();
                 //Creamos un nuevo socket al que le damos esa conexión y un id numérico
                 NuevaConexion conexion = new NuevaConexion(sock, nombre);
-                Thread union = new Thread(conexion);
-                union.start();
+                conexion.run();
+            
                 
-                vectorConexiones[numeroConexiones] = conexion;
+                
+                if(numColumna == modelo.getNumCPG()){
+                    numfila++;
+                    numColumna = 0;
+                }else{
+                    modelo.addConexion(conexion, numfila, numColumna);
+                    numColumna++;
+                }
+                
                 numeroConexiones++;
                 nombre++;
             }
             System.out.println("TODAS LAS CONEXIONES CREADAS CORRECTAMENTE");
-            
-            vectorConexiones[5].Despertar();
         }catch (SocketTimeoutException ste){
             //Si el Timeout llega a 0, salta el error
             System.out.println("[ERROR] Tiempo agotado.Conexiones realizadas: " + numeroConexiones);
@@ -63,6 +69,7 @@ public class Servidor {
             //Cada vez que termina una conexión lo mostramos por pantalla.
             numeroConexiones--;            
             System.out.println("[Excp] Conexión cerrada.");
+            e.printStackTrace();
         }
     }
     
