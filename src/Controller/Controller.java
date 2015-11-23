@@ -48,8 +48,8 @@ public class Controller implements ActionListener{
             case "Localizar":
                 model.Empezar();
                 System.out.println("TODO RECIBIDO");
-                model.EnviarPaquete();
                 System.out.println("ENVIANDO PAQUETES");
+                model.EnviarPaquete();
                 break;
         }
     }

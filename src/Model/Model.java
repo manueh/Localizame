@@ -89,13 +89,12 @@ public class Model {
         for(int i = 0; i < numGrupos; i++){
             for(int j = 0; j < numCPG; j++){
                 aux = j;
-                for(j = 0; j< numCPG; j++){
-                    if(aux!= j){
-                        paqueteaux = conexiones[i][j].getP();
-                        conexiones[i][j].EnviarPaquete(paqueteaux);
+                for(int k = 0; k< numCPG; k++){
+                    if(aux != k){
+                        paqueteaux = conexiones[i][k].getP();
+                        conexiones[i][k].EnviarPaquete(paqueteaux);
                     }
                 }
-                j = aux;
             }
         }
     }
@@ -103,7 +102,7 @@ public class Model {
     public void EnviarNumVecinos(){
         for(int i = 0; i < numGrupos; i++){
             for(int j = 0; j < numCPG; j++){
-                conexiones[i][j].EnviarNumVecinos(numCPG-1);
+                conexiones[i][j].EnviarNumVecinos(numCPG);
             }
         }
     }

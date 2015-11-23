@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import static java.lang.Thread.sleep;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -121,10 +122,15 @@ public class NuevaConexion implements Runnable, Serializable{
             salidatxt = new DataOutputStream(sock.getOutputStream());
             salidatxt.writeUTF("Te envio a tus vecinos.");
             salidatxt.flush();
-            
             salidaObj = new ObjectOutputStream(sock.getOutputStream());
             salidaObj.writeObject(p);
             salidaObj.flush();
+            
+            try {
+                sleep(3000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(NuevaConexion.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } catch (IOException ex) {
             Logger.getLogger(NuevaConexion.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -135,13 +141,15 @@ public class NuevaConexion implements Runnable, Serializable{
     }
     
     public void EnviarNumVecinos(int x){
-        String aux;
-        aux = String.valueOf(x);
+        String aux = null;
+        
         try {
+            System.out.println("Mandando Vecinos...");
             salidatxt = new DataOutputStream(sock.getOutputStream());
             salidatxt.writeUTF("Numero Vecinos");
             salidatxt.flush();
-            
+            System.out.println("El tamaño de grupo es: " + aux);
+            aux = String.valueOf(x);
             salidatxt = new DataOutputStream(sock.getOutputStream());
             salidatxt.writeUTF(aux);
             salidatxt.flush();
