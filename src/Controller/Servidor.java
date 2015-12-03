@@ -1,7 +1,10 @@
 package Controller;
 
 import Model.Model;
+import java.io.IOException;
 import java.net.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -39,14 +42,16 @@ public class Servidor {
         try{
             //Creamos el servidor y le pasamos el puerto en el que escucha
             ss = new ServerSocket(portNumber);
+            
             System.out.println("Servidor a la espera...");
             //Combrobamos que no tengamos más conexiones de las que tenemos que tener
             while(numeroConexiones < modelo.getNumClientes()){
+              //  sock.s
                 //Mientras nos estén llegando conexiones, las aceptamos
                 sock = ss.accept();
                 //Creamos un nuevo socket al que le damos esa conexión y un id numérico
                 NuevaConexion conexion = new NuevaConexion(sock, nombre);
-                conexion.run();
+                conexion.start();
                 //Añadimos las conexiones en el modelo para tener organizados los grupos
                 modelo.addConexion(conexion, numfila, numColumna);
                 if(numColumna == modelo.getNumCPG()-1){
@@ -59,18 +64,25 @@ public class Servidor {
                 numeroConexiones++;
                 nombre++;
             }
-            
-            System.out.println("TODAS LAS CONEXIONES CREADAS CORRECTAMENTE");
             modelo.EnviarNumVecinos();
             
         }catch (SocketTimeoutException ste){
             //Si el Timeout llega a 0, salta el error
             System.out.println("[ERROR] Tiempo agotado.Conexiones realizadas: " + numeroConexiones);
+            
+            
         }catch (Exception e){
             //Cada vez que termina una conexión lo mostramos por pantalla.
             numeroConexiones--;            
             System.out.println("[Excp] Conexión cerrada.");
-            e.printStackTrace();
+        }
+    }
+    
+    public void FinalizarConexiones(){
+        try {
+            sock.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

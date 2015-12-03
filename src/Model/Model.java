@@ -9,18 +9,17 @@ import java.util.ArrayList;
 
  
 public class Model {
-    private NuevaConexion[][] conexiones; //array donde se guardan los hilos
+    private NuevaConexion[][] conexiones; //Matriz donde se guardan los hilos
     private int numClientes;
     private int numGrupos;
     private int numCPG;
     
-    public Model(int _numClientes, int _numGrupos){ //se le da el tamanyo al array
+    public Model(int _numClientes, int _numGrupos){
         numClientes = _numClientes;
         numGrupos = _numGrupos;
         numCPG = numClientes / numGrupos;
         try{
             conexiones = new NuevaConexion[numGrupos][numCPG];
-            System.out.println("Numero de grupos " + numGrupos + "Numero MAX: " + numCPG);
         }catch (Exception e){}
 }
 
@@ -58,20 +57,19 @@ public class Model {
         return grupoTrabajo;
     }
     
-    public void mostrarArrayGrupos(){
+    /*public void mostrarArrayGrupos(){
         System.out.println("Array de conexiones: \n\n");
         for(int i = 0; i < numGrupos; i++){
             for(int j = 0; j < numCPG; j++){
                 System.out.println("Grupo: "+i);
                 System.out.println("Número de cliente: "+j);
-                System.out.println("Identificador del cliente: "+conexiones[i][j].getNombre()+"\n");
+                System.out.println("Identificador de la conexión: "+conexiones[i][j].getNombre());
+                System.out.println("Identificador del proceso conectado: "+conexiones[i][j].getIDHilo()+"\n");
             }
         }
-    }
+    }*/
     
     public void addConexion(NuevaConexion nueva, int fila, int columna){
-        System.out.println("FILA: "+fila);
-        System.out.println("COLUMNA: "+columna);
         conexiones[fila][columna] = nueva;                
     }
     
@@ -86,25 +84,70 @@ public class Model {
     public void EnviarPaquete(){
         int aux;
         Paquete paqueteaux;
+        
         for(int i = 0; i < numGrupos; i++){
             for(int j = 0; j < numCPG; j++){
                 aux = j;
+                paqueteaux = conexiones[i][j].getP();
                 for(int k = 0; k < numCPG; k++){
                     if(aux != k){
-                        
-                        paqueteaux = conexiones[i][k].getP();
                         conexiones[i][k].EnviarPaquete(paqueteaux);
                     }
                 }
             }
         }
+        EsperarRecibidos();
     }
     
     public void EnviarNumVecinos(){
         for(int i = 0; i < numGrupos; i++){
             for(int j = 0; j < numCPG; j++){
-                conexiones[i][j].EnviarNumVecinos(numCPG);
+                conexiones[i][j].EnviarNumVecinos(numCPG-1);
             }
         }
+    }
+    
+    public void EsperarRecibidos(){
+        System.out.println("ENTRO EN ESPERAR RECIBIDOS");
+        int contador = 0;
+        int aux = 0;
+        boolean[] cerrados;
+        
+        cerrados = new boolean[numGrupos];
+        for(int i = 0; i < numGrupos; i++){
+            for(int j = 0; j < numCPG; j++){
+                aux = j;
+                if(conexiones[i][j].EsperarRecibidos()){
+                    contador++;
+                }
+                if(contador == numCPG){
+                    cerrados[i] = true;
+                    for(int o = 0; o < numCPG; o++){
+                        conexiones[i][o].CerrarConexion();
+                    }
+                }
+            }
+            
+            contador = 0;
+        }
+        
+        for (int i = 0; i < cerrados.length; i++){
+            if(!cerrados[i]){
+                for(int j = 0; j < numCPG; j++){
+                    aux = j;
+                    if(conexiones[i][j].EsperarRecibidos()){
+                        contador++;
+                    }
+                }
+                if(contador == numCPG){
+                    cerrados[i] = true;
+                    for(int o = 0; o < numCPG; o++){
+                        conexiones[i][o].CerrarConexion();
+                    }
+                }
+                contador = 0;
+            }
+        }
+        System.out.println("Salgo de ESPERAR RECIBIDOS");
     }
 }

@@ -28,13 +28,13 @@
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jTFNumClients" pref="29" max="32767" attributes="0"/>
-                          <Component id="jTFnumGrupos" max="32767" attributes="0"/>
-                          <Component id="jTNumCiclos" max="32767" attributes="0"/>
+                          <Component id="jTFNumClients" pref="52" max="32767" attributes="0"/>
+                          <Component id="jTFnumGrupos" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jTNumCiclos" alignment="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace pref="55" max="32767" attributes="0"/>
+              <EmptySpace pref="32" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -71,7 +71,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="jTFNumClients">
       <Properties>
-        <Property name="text" type="java.lang.String" value="10"/>
+        <Property name="text" type="java.lang.String" value="1000"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTFNumClientsActionPerformed"/>
@@ -95,7 +95,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="jTFnumGrupos">
       <Properties>
-        <Property name="text" type="java.lang.String" value="10"/>
+        <Property name="text" type="java.lang.String" value="100"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTFnumGruposActionPerformed"/>

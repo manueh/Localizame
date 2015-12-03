@@ -14,14 +14,13 @@ import java.io.Serializable;
 
 public class Paquete implements Serializable{
     private double coordx, coordy; 
-    private int id;
+    private String id;
     
-    public Paquete(int id, double coordx,double coordy){
+    public Paquete(String id, double coordx,double coordy){
         this.id = id;
         this.coordx = coordx;
         this.coordy = coordy;
     }
-    
     public void setX(double coordx){
         this.coordx = coordx;
     }
@@ -38,11 +37,11 @@ public class Paquete implements Serializable{
         return this.coordy;
     }
     
-    public void setID(int id){
+    public void setID(String id){
         this.id = id;
     }
     
-     public int getID(){
+     public String getID(){
         return this.id;
     }
     

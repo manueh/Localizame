@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import static java.lang.Thread.sleep;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +20,7 @@ import java.util.logging.Logger;
  *
  * @author 2_4
  */
-public class NuevaConexion implements Runnable, Serializable{
+public class NuevaConexion extends Thread implements  Serializable{
     /**
      * Variables para la conexión y el envío y recepción de mensajes
      */
@@ -42,7 +41,8 @@ public class NuevaConexion implements Runnable, Serializable{
     
     private final int nombre;
     private double coordX, coordY;
-    private int id;
+    private String idHilo;
+    private String idPaquete;
     
     public NuevaConexion (Socket _socket, int _nombre){
         sock = _socket;
@@ -57,8 +57,7 @@ public class NuevaConexion implements Runnable, Serializable{
             salidatxt.flush();
             
             entradatxt = new DataInputStream(sock.getInputStream());
-            
-            System.out.println("ENTRADA: "+entradatxt.readUTF());
+            idHilo = entradatxt.readUTF();
             
         } catch (IOException ex) {
             System.out.println("[ERROR] Socket " + nombre + " finalizado.");
@@ -71,7 +70,6 @@ public class NuevaConexion implements Runnable, Serializable{
     }
     
     public synchronized void Empezar(){
-        System.out.println("VAMOS A EMPEZAR LA RECEPCIÓN: "+nombre);
         try {
             salidatxt.writeUTF(empezar);
             salidatxt.flush();
@@ -84,22 +82,17 @@ public class NuevaConexion implements Runnable, Serializable{
     public void RecepcionPaquete(){
         Object aux;
         try {
-            System.out.println("Socket "+ nombre+": Intentamos recibir el paquete");
             entradaObj = new ObjectInputStream(sock.getInputStream());
             try {
                 aux = entradaObj.readObject();
                 p = (Paquete)aux;
-                System.out.println("Paquete Recibido");
                 
-                id = p.getID();
+                idPaquete = p.getID();
                 coordX = p.getX();
                 coordY = p.getY();
-
-                System.out.println("Paquete "+ id +" creado con las coordenadas X = "+coordX+" Y = "+coordY);
                 
             } catch (ClassNotFoundException ex) {
                 System.out.println("[ERROR]  Imposible realizar el casteo del socket "+nombre);
-                ex.printStackTrace();
             }
             try {
                 salidatxt = new DataOutputStream(sock.getOutputStream());
@@ -117,20 +110,19 @@ public class NuevaConexion implements Runnable, Serializable{
         return nombre;
     }
     
-    public void EnviarPaquete(Paquete p){
+    public String getIDHilo(){
+        return idHilo;
+    }
+    
+    public void EnviarPaquete(Paquete _p){
         try {
             salidatxt = new DataOutputStream(sock.getOutputStream());
             salidatxt.writeUTF("Te envio a tus vecinos.");
             salidatxt.flush();
             salidaObj = new ObjectOutputStream(sock.getOutputStream());
-            salidaObj.writeObject(p);
+            salidaObj.writeObject(_p);
             salidaObj.flush();
             
-            try {
-                sleep(3000);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(NuevaConexion.class.getName()).log(Level.SEVERE, null, ex);
-            }
         } catch (IOException ex) {
             Logger.getLogger(NuevaConexion.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -141,17 +133,50 @@ public class NuevaConexion implements Runnable, Serializable{
     }
     
     public void EnviarNumVecinos(int x){
-        String aux = null;
+        String aux;
         
         try {
-            System.out.println("Mandando Vecinos...");
             salidatxt = new DataOutputStream(sock.getOutputStream());
             salidatxt.writeUTF("Numero Vecinos");
             salidatxt.flush();
-            System.out.println("El tamaño de grupo es: " + aux);
+            
             aux = String.valueOf(x);
             salidatxt = new DataOutputStream(sock.getOutputStream());
             salidatxt.writeUTF(aux);
+            salidatxt.flush();
+            
+        } catch (IOException ex) {
+            Logger.getLogger(NuevaConexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    public boolean EsperarRecibidos(){
+        boolean recibidos = false;
+        String mensaje;
+        try {
+            entradatxt = new DataInputStream(sock.getInputStream());
+            mensaje = entradatxt.readUTF();
+            while(!"Todos Recibidos".equals(mensaje)){
+                try {
+                    NuevaConexion.sleep(500);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(NuevaConexion.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                entradatxt = new DataInputStream(sock.getInputStream());
+                mensaje = entradatxt.readUTF();
+            }
+            recibidos = true;
+        } catch (IOException ex) {
+            Logger.getLogger(NuevaConexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return recibidos;
+    }
+    
+    public void CerrarConexion(){
+        try {
+            salidatxt = new DataOutputStream(sock.getOutputStream());
+            salidatxt.writeUTF("Fin Ciclo");
             salidatxt.flush();
         } catch (IOException ex) {
             Logger.getLogger(NuevaConexion.class.getName()).log(Level.SEVERE, null, ex);

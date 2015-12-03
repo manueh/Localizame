@@ -30,26 +30,24 @@ public class Controller implements ActionListener{
         
         switch (s){
             case "comenzar":
-                try{
-                    numClientes = view.getNumClientes();
-                    numGrupos = view.getNumGrupos();
-                    numCiclos = view.getNumCiclos();
+                numClientes = view.getNumClientes();
+                numGrupos = view.getNumGrupos();
+                numCiclos = view.getNumCiclos();
+                view.swapPanel("");
 
-                    view.swapPanel("waiting");
-
-                    if(comprobarNumero(numClientes, numGrupos)){
-                        model = new Model(numClientes, numGrupos);
-                        this.iniciar(numClientes, model);
-                    }
-                }catch(Exception e){
-                    System.out.println("ERROR EN EL CAMBIO DE VENTANA");
+                if(comprobarNumero(numClientes, numGrupos)){
+                    model = new Model(numClientes, numGrupos);
+                    this.iniciar(numClientes, model);
                 }
                 break;
             case "Localizar":
                 model.Empezar();
-                System.out.println("TODO RECIBIDO");
-                System.out.println("ENVIANDO PAQUETES");
                 model.EnviarPaquete();
+                model.EsperarRecibidos();
+                System.out.println("TODOS LOS CLIENTES TIENEN LA INFORMACION CORRECTAMENTE");
+                break;
+            default:
+                System.out.println("ESTOY EN EL CASE DEFAULT");
                 break;
         }
     }

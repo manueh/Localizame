@@ -39,7 +39,7 @@ public class Initial extends javax.swing.JPanel {
 
         jLNumClients.setText("Introduce el número de clientes:");
 
-        jTFNumClients.setText("10");
+        jTFNumClients.setText("1000");
         jTFNumClients.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTFNumClientsActionPerformed(evt);
@@ -56,7 +56,7 @@ public class Initial extends javax.swing.JPanel {
 
         jLnumGrupos.setText("Itroducir el número de grupos:");
 
-        jTFnumGrupos.setText("10");
+        jTFnumGrupos.setText("100");
         jTFnumGrupos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTFnumGruposActionPerformed(evt);
@@ -87,10 +87,10 @@ public class Initial extends javax.swing.JPanel {
                             .addComponent(jLNumCiclos))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTFNumClients, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+                            .addComponent(jTFNumClients, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
                             .addComponent(jTFnumGrupos)
                             .addComponent(jTNumCiclos))))
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
