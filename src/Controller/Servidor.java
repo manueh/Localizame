@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.SpringLayout;
 
 /**
  *
@@ -26,7 +27,11 @@ public class Servidor {
     private int numeroConexiones = 0;
     private int numfila = 0;
     private int numColumna = 0;
+    private int numGrupo = 0;
+    private int numTotalClientes = 0;
     private final Model modelo;
+    private Grupo vectorGrupos[];
+    
     
     /**
      * Constructor con parámetros
@@ -35,34 +40,52 @@ public class Servidor {
      */
     public Servidor(int totalClients, Model _modelo){
        modelo = _modelo;
+       vectorGrupos = new Grupo[modelo.getNumGrupos()];
+       numTotalClientes = totalClients;
        iniciarServer();
     }
     
     private synchronized void iniciarServer(){
+        int contadoraux = 0;
+        int contGrupos = 0;
+        int cliPorGrupos = modelo.getNumCPG();
         try{
             //Creamos el servidor y le pasamos el puerto en el que escucha
             ss = new ServerSocket(portNumber);
             
             System.out.println("Servidor a la espera...");
-            //Combrobamos que no tengamos más conexiones de las que tenemos que tener
-            while(numeroConexiones < modelo.getNumClientes()){
-              //  sock.s
-                //Mientras nos estén llegando conexiones, las aceptamos
-                sock = ss.accept();
+            
+            while(numeroConexiones < numTotalClientes){
                 //Creamos un nuevo socket al que le damos esa conexión y un id numérico
-                NuevaConexion conexion = new NuevaConexion(sock, nombre);
-                conexion.start();
-                //Añadimos las conexiones en el modelo para tener organizados los grupos
-                modelo.addConexion(conexion, numfila, numColumna);
-                if(numColumna == modelo.getNumCPG()-1){
-                    numfila++;
-                    numColumna = 0;
-                }else{
-                    numColumna++;
+                Grupo grupo = new Grupo(numGrupo, cliPorGrupos);
+                vectorGrupos[contGrupos] = grupo;
+                numGrupo++;
+                System.out.println("GRUPO "+grupo.getiDgrupo()+" CREADO.");
+                
+                while(contadoraux < cliPorGrupos){
+                    //Mientras nos estén llegando conexiones, las aceptamos
+                    sock = ss.accept();
+                    grupo.nuevoCliente(sock, nombre);
+                    //Añadimos las conexiones en el modelo para tener organizados los grupos
+                    modelo.addConexion(grupo.getNuevaConexion(nombre), numfila, numColumna);
+                    
+                    contadoraux++;
+                    if(numColumna == modelo.getNumCPG()-1){
+                        numfila++;
+                        numColumna = 0;
+                    }else{
+                        numColumna++;
+                    }
+                    //Incrementamos el contador de conexiones y el nombre del socket
+                    numeroConexiones++;
+                    nombre++;
                 }
-                //Incrementamos el contador de conexiones y el nombre del socket
-                numeroConexiones++;
-                nombre++;
+                contadoraux = 0;
+                contGrupos++;
+            }
+            System.out.println("GRUPOS CREADOS CORRECTAMENTE.");
+            for(int i = 0 ; i < vectorGrupos.length;i++){
+                vectorGrupos[i].start();
             }
             modelo.EnviarNumVecinos();
             

@@ -33,7 +33,7 @@ public class Controller implements ActionListener{
                 numClientes = view.getNumClientes();
                 numGrupos = view.getNumGrupos();
                 numCiclos = view.getNumCiclos();
-                view.swapPanel("");
+                view.swapPanel("waiting");
 
                 if(comprobarNumero(numClientes, numGrupos)){
                     model = new Model(numClientes, numGrupos);

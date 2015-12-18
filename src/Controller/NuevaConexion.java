@@ -45,6 +45,7 @@ public class NuevaConexion extends Thread implements  Serializable{
     private String idPaquete;
     
     public NuevaConexion (Socket _socket, int _nombre){
+        
         sock = _socket;
         nombre = _nombre;
     }
@@ -73,6 +74,11 @@ public class NuevaConexion extends Thread implements  Serializable{
         try {
             salidatxt.writeUTF(empezar);
             salidatxt.flush();
+            try {
+                sleep(50);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(NuevaConexion.class.getName()).log(Level.SEVERE, null, ex);
+            }
             RecepcionPaquete();
         } catch (IOException ex) {
             System.out.println("[ERROR] No se ha podido enviar el mensaje de empezar.");
@@ -90,6 +96,7 @@ public class NuevaConexion extends Thread implements  Serializable{
                 idPaquete = p.getID();
                 coordX = p.getX();
                 coordY = p.getY();
+                System.out.println("PAQUETE "+ p.getID()+" RECIBIDO.");
                 
             } catch (ClassNotFoundException ex) {
                 System.out.println("[ERROR]  Imposible realizar el casteo del socket "+nombre);
@@ -108,10 +115,6 @@ public class NuevaConexion extends Thread implements  Serializable{
     }
     public int getNombre() {
         return nombre;
-    }
-    
-    public String getIDHilo(){
-        return idHilo;
     }
     
     public void EnviarPaquete(Paquete _p){
