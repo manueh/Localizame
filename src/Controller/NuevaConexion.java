@@ -38,6 +38,8 @@ public class NuevaConexion extends Thread implements  Serializable{
     private final String conectado = "Conexión creada, mantente a la espera.";
     private final String empezar = "Comenzar";
     private final String recibido = "Coordenadas recibidas";
+    private final String finciclo = "Fin Ciclo";
+    private final String finejecucion = "Finalizar";
     
     private final int nombre;
     private double coordX, coordY;
@@ -179,7 +181,7 @@ public class NuevaConexion extends Thread implements  Serializable{
     public void CerrarConexion(){
         try {
             salidatxt = new DataOutputStream(sock.getOutputStream());
-            salidatxt.writeUTF("Fin Ciclo");
+            salidatxt.writeUTF(finciclo);
             salidatxt.flush();
         } catch (IOException ex) {
             Logger.getLogger(NuevaConexion.class.getName()).log(Level.SEVERE, null, ex);

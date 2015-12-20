@@ -1,3 +1,7 @@
+/*
+*   Clase servidor a la que se conectan todos los clientes. Es el encargado de 
+*   recibir y enviar las posiciones de cada uno de ellos al resto de vecinos.
+*/
 package Controller;
 
 import Model.Model;
@@ -5,12 +9,7 @@ import java.io.IOException;
 import java.net.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.SpringLayout;
 
-/**
- *
- * @author Grupo 2_4
- */
 public class Servidor {
     /**
      * Variables con las cantidades de vecinos minima y máxima que puede tener 
@@ -24,6 +23,9 @@ public class Servidor {
      * Puerto en el que escucha el servidor
      */
     private final int portNumber = 5000;
+    /*
+    *   Variables necesarias para el manejo de las conexiones
+    */
     private int numeroConexiones = 0;
     private int numfila = 0;
     private int numColumna = 0;
@@ -60,7 +62,6 @@ public class Servidor {
                 Grupo grupo = new Grupo(numGrupo, cliPorGrupos);
                 vectorGrupos[contGrupos] = grupo;
                 numGrupo++;
-                System.out.println("GRUPO "+grupo.getiDgrupo()+" CREADO.");
                 
                 while(contadoraux < cliPorGrupos){
                     //Mientras nos estén llegando conexiones, las aceptamos
