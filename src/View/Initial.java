@@ -39,7 +39,7 @@ public class Initial extends javax.swing.JPanel {
 
         jLNumClients.setText("Introduce el número de clientes:");
 
-        jTFNumClients.setText("1000");
+        jTFNumClients.setText("100");
         jTFNumClients.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTFNumClientsActionPerformed(evt);
@@ -54,18 +54,18 @@ public class Initial extends javax.swing.JPanel {
             }
         });
 
-        jLnumGrupos.setText("Itroducir el número de grupos:");
+        jLnumGrupos.setText("Introduce el número de grupos:");
 
-        jTFnumGrupos.setText("100");
+        jTFnumGrupos.setText("10");
         jTFnumGrupos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTFnumGruposActionPerformed(evt);
             }
         });
 
-        jLNumCiclos.setText("Introducir el número de ciclos:");
+        jLNumCiclos.setText("Introduce el número de ciclos:");
 
-        jTNumCiclos.setText("10");
+        jTNumCiclos.setText("3");
         jTNumCiclos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTNumCiclosActionPerformed(evt);

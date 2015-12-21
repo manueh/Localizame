@@ -30,10 +30,11 @@ public class Controller implements ActionListener{
         
         switch (s){
             case "comenzar":
+                view.swapPanel("waiting");
                 numClientes = view.getNumClientes();
                 numGrupos = view.getNumGrupos();
                 numCiclos = view.getNumCiclos();
-                view.swapPanel("waiting");
+                
 
                 if(comprobarNumero(numClientes, numGrupos)){
                     model = new Model(numClientes, numGrupos);
@@ -41,10 +42,14 @@ public class Controller implements ActionListener{
                 }
                 break;
             case "Localizar":
-                model.Empezar();
-                model.EnviarPaquete();
-                model.EsperarRecibidos();
-                System.out.println("TODOS LOS CLIENTES TIENEN LA INFORMACION CORRECTAMENTE");
+                for(int i = 0; i < view.getNumCiclos(); i++){
+                    System.out.println("NUMERO DE CICLO --> "+i);
+                    model.Empezar();
+                    model.EnviarPaquete();
+                    System.out.println("TODOS LOS CLIENTES TIENEN LA INFORMACION CORRECTAMENTE");
+                }
+                model.FinalizarEjecucion();
+                view.swapPanel("initial");
                 break;
             default:
                 System.out.println("ESTOY EN EL CASE DEFAULT");

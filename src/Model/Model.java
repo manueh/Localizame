@@ -57,18 +57,6 @@ public class Model {
         return grupoTrabajo;
     }
     
-    /*public void mostrarArrayGrupos(){
-        System.out.println("Array de conexiones: \n\n");
-        for(int i = 0; i < numGrupos; i++){
-            for(int j = 0; j < numCPG; j++){
-                System.out.println("Grupo: "+i);
-                System.out.println("Número de cliente: "+j);
-                System.out.println("Identificador de la conexión: "+conexiones[i][j].getNombre());
-                System.out.println("Identificador del proceso conectado: "+conexiones[i][j].getIDHilo()+"\n");
-            }
-        }
-    }*/
-    
     public void addConexion(NuevaConexion nueva, int fila, int columna){
         conexiones[fila][columna] = nueva;                
     }
@@ -108,46 +96,33 @@ public class Model {
     }
     
     public void EsperarRecibidos(){
-        System.out.println("ENTRO EN ESPERAR RECIBIDOS");
         int contador = 0;
         int aux = 0;
         boolean[] cerrados;
-        
         cerrados = new boolean[numGrupos];
+        
         for(int i = 0; i < numGrupos; i++){
             for(int j = 0; j < numCPG; j++){
-                aux = j;
                 if(conexiones[i][j].EsperarRecibidos()){
                     contador++;
                 }
                 if(contador == numCPG){
                     cerrados[i] = true;
                     for(int o = 0; o < numCPG; o++){
-                        conexiones[i][o].CerrarConexion();
+                        conexiones[i][o].FinCiclo();
                     }
                 }
             }
             
             contador = 0;
         }
-        
-        for (int i = 0; i < cerrados.length; i++){
-            if(!cerrados[i]){
-                for(int j = 0; j < numCPG; j++){
-                    aux = j;
-                    if(conexiones[i][j].EsperarRecibidos()){
-                        contador++;
-                    }
-                }
-                if(contador == numCPG){
-                    cerrados[i] = true;
-                    for(int o = 0; o < numCPG; o++){
-                        conexiones[i][o].CerrarConexion();
-                    }
-                }
-                contador = 0;
+    }
+    
+    public void FinalizarEjecucion(){
+        for(int i = 0; i < numGrupos; i++){
+            for(int j = 0; j < numCPG; j++){
+                conexiones[i][j].FinEjecucion();
             }
         }
-        System.out.println("Salgo de ESPERAR RECIBIDOS");
     }
 }

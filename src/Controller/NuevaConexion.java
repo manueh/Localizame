@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Clase que gestiona la conexión de un cliente con un socket en concreto.
+ *
  */
 package Controller;
 
@@ -98,7 +97,6 @@ public class NuevaConexion extends Thread implements  Serializable{
                 idPaquete = p.getID();
                 coordX = p.getX();
                 coordY = p.getY();
-                System.out.println("PAQUETE "+ p.getID()+" RECIBIDO.");
                 
             } catch (ClassNotFoundException ex) {
                 System.out.println("[ERROR]  Imposible realizar el casteo del socket "+nombre);
@@ -158,13 +156,12 @@ public class NuevaConexion extends Thread implements  Serializable{
     
     public boolean EsperarRecibidos(){
         boolean recibidos = false;
-        String mensaje;
         try {
             entradatxt = new DataInputStream(sock.getInputStream());
-            mensaje = entradatxt.readUTF();
+            String mensaje = entradatxt.readUTF();
             while(!"Todos Recibidos".equals(mensaje)){
                 try {
-                    NuevaConexion.sleep(500);
+                    this.sleep(500);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(NuevaConexion.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -173,12 +170,13 @@ public class NuevaConexion extends Thread implements  Serializable{
             }
             recibidos = true;
         } catch (IOException ex) {
+            System.out.println("NO HE PODIDO LEER EL MENSAJE");
             Logger.getLogger(NuevaConexion.class.getName()).log(Level.SEVERE, null, ex);
         }
         return recibidos;
     }
     
-    public void CerrarConexion(){
+    public void FinCiclo(){
         try {
             salidatxt = new DataOutputStream(sock.getOutputStream());
             salidatxt.writeUTF(finciclo);
@@ -187,5 +185,15 @@ public class NuevaConexion extends Thread implements  Serializable{
             Logger.getLogger(NuevaConexion.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+    }
+    
+    public void FinEjecucion(){
+        try {
+            salidatxt = new DataOutputStream(sock.getOutputStream());
+            salidatxt.writeUTF(finejecucion);
+            salidatxt.flush();
+        } catch (IOException ex) {
+            Logger.getLogger(NuevaConexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

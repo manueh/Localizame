@@ -82,6 +82,9 @@ public class PrincipalWindow extends javax.swing.JFrame {
      * @param name Nombre del panel a mostrar
      */
     public void swapPanel(String name){
+        if(name.equals("waiting")){
+            waiting.setConexionesTotales(initial.getNumClientes());
+        }
         cl.show(this.getContentPane(), name);
     }
     /**
@@ -98,5 +101,9 @@ public class PrincipalWindow extends javax.swing.JFrame {
     
     public int getNumCiclos(){
         return initial.getNumCiclos();
+    }
+    
+    public void actualizarNumConexiones(int x){
+        waiting.setConexiones(x);
     }
 }

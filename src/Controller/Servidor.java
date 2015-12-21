@@ -105,6 +105,7 @@ public class Servidor {
     public void FinalizarConexiones(){
         try {
             sock.close();
+            System.out.println("Conexiones cerradas");
         } catch (IOException ex) {
             Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
         }

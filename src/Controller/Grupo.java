@@ -15,12 +15,13 @@ import java.util.ArrayList;
 public class Grupo extends Thread{
     private int iDgrupo;
     private int numConexiones;
-    private int contador = 0;
+    private int contador;
     private Socket sock;
     private int nombre = 0;
     private ArrayList<NuevaConexion> vectorConexiones;
     
     public Grupo(int _iDgrupo ,int _numConexiones){
+        contador = 0;
         iDgrupo = _iDgrupo;
         numConexiones = _numConexiones;
         vectorConexiones = new ArrayList<NuevaConexion>();

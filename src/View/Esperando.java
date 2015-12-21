@@ -34,11 +34,11 @@ public class Esperando extends javax.swing.JPanel {
 
         jLabel2.setText("Número de conexiones: ");
 
-        jLnumConexiones.setText("jLabel3");
+        jLnumConexiones.setText("0");
 
         jLabel4.setText("de");
 
-        jLnumConexTotal.setText("jLabel5");
+        jLnumConexTotal.setText("0");
 
         jBLocalizar.setText("Localizar");
         jBLocalizar.addActionListener(new java.awt.event.ActionListener() {
@@ -65,7 +65,7 @@ public class Esperando extends javax.swing.JPanel {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jLnumConexTotal))
                         .addComponent(jLabel1)))
-                .addContainerGap(133, Short.MAX_VALUE))
+                .addContainerGap(176, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

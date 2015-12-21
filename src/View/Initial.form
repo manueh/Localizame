@@ -71,7 +71,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="jTFNumClients">
       <Properties>
-        <Property name="text" type="java.lang.String" value="1000"/>
+        <Property name="text" type="java.lang.String" value="100"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTFNumClientsActionPerformed"/>
@@ -90,12 +90,12 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLnumGrupos">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Itroducir el n&#xfa;mero de grupos:"/>
+        <Property name="text" type="java.lang.String" value="Introduce el n&#xfa;mero de grupos:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTFnumGrupos">
       <Properties>
-        <Property name="text" type="java.lang.String" value="100"/>
+        <Property name="text" type="java.lang.String" value="10"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTFnumGruposActionPerformed"/>
@@ -103,12 +103,12 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLNumCiclos">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Introducir el n&#xfa;mero de ciclos:"/>
+        <Property name="text" type="java.lang.String" value="Introduce el n&#xfa;mero de ciclos:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTNumCiclos">
       <Properties>
-        <Property name="text" type="java.lang.String" value="10"/>
+        <Property name="text" type="java.lang.String" value="3"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTNumCiclosActionPerformed"/>
